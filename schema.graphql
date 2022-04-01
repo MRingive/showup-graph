@@ -1,0 +1,11 @@
+type AttemptCreated @entity {
+  id: ID!
+  creator: Bytes! # address
+  attemptId: BigInt! # uint256
+}
+
+type JourneyCreated @entity {
+  id: ID!
+  creator: Bytes! # address
+  journeyId: BigInt! # uint256
+}

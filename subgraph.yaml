@@ -1,0 +1,27 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ShowUpClub
+    network: mumbai
+    source:
+      address: "0xd7d8E7422F9EF989c7c18B6D0fE0102Aed85C7ef"
+      abi: ShowUpClub
+      startBlock: 25750870
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AttemptCreated
+        - JourneyCreated
+      abis:
+        - name: ShowUpClub
+          file: ./abis/ShowUpClub.json
+      eventHandlers:
+        - event: AttemptCreated(indexed address,uint256)
+          handler: handleAttemptCreated
+        - event: JourneyCreated(indexed address,uint256)
+          handler: handleJourneyCreated
+      file: ./src/mapping.ts
