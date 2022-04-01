@@ -9,3 +9,10 @@ type JourneyCreated @entity {
   creator: Bytes! # address
   journeyId: BigInt! # uint256
 }
+
+type Journey @entity {
+  id: ID!
+  creator: Bytes! # address
+  journeyId: BigInt! # uint256
+  description: String!
+}
