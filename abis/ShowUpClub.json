@@ -1,23 +1,45 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
-  { "inputs": [], "name": "JourneyDoesNotExist", "type": "error" },
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "JourneyAlreadyCompleted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "JourneyDoesNotExist",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "JourneyEnded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "JourneyNotEnded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotCreatorOfJourney",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "id",
         "type": "uint256"
       }
     ],
-    "name": "AttemptCreated",
+    "name": "JourneyCompleted",
     "type": "event"
   },
   {
@@ -40,10 +62,39 @@
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
-      { "internalType": "uint256", "name": "journeyId", "type": "uint256" }
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "journeyId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "note",
+        "type": "string"
+      }
     ],
-    "name": "createAttempt",
+    "name": "ShowUp",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "journeyId",
+        "type": "uint256"
+      }
+    ],
+    "name": "completeJourney",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -60,29 +111,40 @@
         "name": "format",
         "type": "uint8"
       },
-      { "internalType": "uint256", "name": "duration", "type": "uint256" },
-      { "internalType": "uint256", "name": "dailyValue", "type": "uint256" },
-      { "internalType": "string", "name": "description", "type": "string" }
+      {
+        "internalType": "uint256",
+        "name": "duration",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dailyValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "charity",
+        "type": "address"
+      }
     ],
     "name": "createJourney",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "journeyId", "type": "uint256" },
-      { "internalType": "uint256", "name": "attemptId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
     ],
-    "name": "getAttemptEndDate",
-    "outputs": [
-      { "internalType": "uint256", "name": "endDate_", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" }],
     "name": "getJourney",
     "outputs": [
       {
@@ -97,14 +159,51 @@
             "name": "format",
             "type": "uint8"
           },
-          { "internalType": "uint256", "name": "duration", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "duration",
+            "type": "uint256"
+          },
           {
             "internalType": "uint256",
             "name": "dailyValue",
             "type": "uint256"
           },
-          { "internalType": "string", "name": "description", "type": "string" },
-          { "internalType": "address", "name": "creator", "type": "address" }
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "creator",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "charity",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "currentValue",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "fundsLocked",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "completed",
+            "type": "bool"
+          }
         ],
         "internalType": "struct ShowUpClub.Journey",
         "name": "journey_",
@@ -129,7 +228,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "creator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      }
     ],
     "name": "getJourneyIdsForUser",
     "outputs": [
@@ -143,7 +246,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "journeys",
     "outputs": [
       {
@@ -156,12 +265,108 @@
         "name": "format",
         "type": "uint8"
       },
-      { "internalType": "uint256", "name": "duration", "type": "uint256" },
-      { "internalType": "uint256", "name": "dailyValue", "type": "uint256" },
-      { "internalType": "string", "name": "description", "type": "string" },
-      { "internalType": "address", "name": "creator", "type": "address" }
+      {
+        "internalType": "uint256",
+        "name": "duration",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dailyValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "charity",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fundsLocked",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "completed",
+        "type": "bool"
+      }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "dest",
+        "type": "address"
+      }
+    ],
+    "name": "payments",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "journeyId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "note",
+        "type": "string"
+      }
+    ],
+    "name": "showUp",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "payee",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawPayments",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

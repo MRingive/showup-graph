@@ -1,16 +1,20 @@
 import {
-  AttemptCreated as AttemptCreatedEvent,
   JourneyCreated as JourneyCreatedEvent,
+  ShowUp as ShowUpEvent,
   ShowUpClub
 } from "../generated/ShowUpClub/ShowUpClub"
-import { AttemptCreated, Journey, JourneyCreated } from "../generated/schema"
+import { ShowUp, Journey, JourneyCreated } from "../generated/schema"
 
-export function handleAttemptCreated(event: AttemptCreatedEvent): void {
-  let entity = new AttemptCreated(
+export function handleShowUp(event: ShowUpEvent): void {
+  let entity = new ShowUp(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
-  entity.creator = event.params.creator
-  entity.attemptId = event.params.id
+  entity.journeyId = event.params.journeyId
+  entity.value = event.params.value
+  entity.note = event.params.note
+
+  entity.blockTimestamp = event.block.timestamp
+
   entity.save()
 }
 
@@ -24,6 +28,8 @@ export function handleJourneyCreated(event: JourneyCreatedEvent): void {
 
 
   const journey = ShowUpClub.bind(event.address)
+
+  const journeys = journey.getJourneyIds()
 
   let journeyEntity = new Journey(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()

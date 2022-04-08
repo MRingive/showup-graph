@@ -1,9 +1,3 @@
-type AttemptCreated @entity {
-  id: ID!
-  creator: Bytes! # address
-  attemptId: BigInt! # uint256
-}
-
 type JourneyCreated @entity {
   id: ID!
   creator: Bytes! # address
@@ -15,4 +9,12 @@ type Journey @entity {
   creator: Bytes! # address
   journeyId: BigInt! # uint256
   description: String!
+}
+
+type ShowUp @entity {
+  id: ID!
+  journeyId: BigInt! # uint256
+  value: BigInt! # uint256
+  note: String!
+  blockTimestamp: BigInt!
 }

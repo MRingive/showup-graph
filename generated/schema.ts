@@ -11,59 +11,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class AttemptCreated extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("creator", Value.fromBytes(Bytes.empty()));
-    this.set("attemptId", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save AttemptCreated entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type AttemptCreated must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
-      );
-      store.set("AttemptCreated", id.toString(), this);
-    }
-  }
-
-  static load(id: string): AttemptCreated | null {
-    return changetype<AttemptCreated | null>(store.get("AttemptCreated", id));
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get creator(): Bytes {
-    let value = this.get("creator");
-    return value!.toBytes();
-  }
-
-  set creator(value: Bytes) {
-    this.set("creator", Value.fromBytes(value));
-  }
-
-  get attemptId(): BigInt {
-    let value = this.get("attemptId");
-    return value!.toBigInt();
-  }
-
-  set attemptId(value: BigInt) {
-    this.set("attemptId", Value.fromBigInt(value));
-  }
-}
-
 export class JourneyCreated extends Entity {
   constructor(id: string) {
     super();
@@ -177,5 +124,78 @@ export class Journey extends Entity {
 
   set description(value: string) {
     this.set("description", Value.fromString(value));
+  }
+}
+
+export class ShowUp extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("journeyId", Value.fromBigInt(BigInt.zero()));
+    this.set("value", Value.fromBigInt(BigInt.zero()));
+    this.set("note", Value.fromString(""));
+    this.set("blockTimestamp", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save ShowUp entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type ShowUp must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("ShowUp", id.toString(), this);
+    }
+  }
+
+  static load(id: string): ShowUp | null {
+    return changetype<ShowUp | null>(store.get("ShowUp", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get journeyId(): BigInt {
+    let value = this.get("journeyId");
+    return value!.toBigInt();
+  }
+
+  set journeyId(value: BigInt) {
+    this.set("journeyId", Value.fromBigInt(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value!.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get note(): string {
+    let value = this.get("note");
+    return value!.toString();
+  }
+
+  set note(value: string) {
+    this.set("note", Value.fromString(value));
+  }
+
+  get blockTimestamp(): BigInt {
+    let value = this.get("blockTimestamp");
+    return value!.toBigInt();
+  }
+
+  set blockTimestamp(value: BigInt) {
+    this.set("blockTimestamp", Value.fromBigInt(value));
   }
 }

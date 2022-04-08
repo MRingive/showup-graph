@@ -6,7 +6,7 @@ dataSources:
     name: ShowUpClub
     network: mumbai
     source:
-      address: "0xd7d8E7422F9EF989c7c18B6D0fE0102Aed85C7ef"
+      address: "0xE32668814A27C1A5B20F1e3547B411759Bdb216d"
       abi: ShowUpClub
       startBlock: 25750870
     mapping:
@@ -20,8 +20,8 @@ dataSources:
         - name: ShowUpClub
           file: ./abis/ShowUpClub.json
       eventHandlers:
-        - event: AttemptCreated(indexed address,uint256)
-          handler: handleAttemptCreated
+        - event: ShowUp(indexed uint256,uint256,string)
+          handler: handleShowUp
         - event: JourneyCreated(indexed address,uint256)
           handler: handleJourneyCreated
       file: ./src/mapping.ts
