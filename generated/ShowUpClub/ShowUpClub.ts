@@ -77,12 +77,12 @@ export class ShowUp__Params {
 }
 
 export class ShowUpClub__getJourneyResultJourney_Struct extends ethereum.Tuple {
-  get action(): i32 {
-    return this[0].toI32();
+  get action(): string {
+    return this[0].toString();
   }
 
-  get format(): i32 {
-    return this[1].toI32();
+  get format(): string {
+    return this[1].toString();
   }
 
   get duration(): BigInt {
@@ -123,8 +123,8 @@ export class ShowUpClub__getJourneyResultJourney_Struct extends ethereum.Tuple {
 }
 
 export class ShowUpClub__journeysResult {
-  value0: i32;
-  value1: i32;
+  value0: string;
+  value1: string;
   value2: BigInt;
   value3: BigInt;
   value4: string;
@@ -136,8 +136,8 @@ export class ShowUpClub__journeysResult {
   value10: boolean;
 
   constructor(
-    value0: i32,
-    value1: i32,
+    value0: string,
+    value1: string,
     value2: BigInt,
     value3: BigInt,
     value4: string,
@@ -163,14 +163,8 @@ export class ShowUpClub__journeysResult {
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
-    map.set(
-      "value0",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value0))
-    );
-    map.set(
-      "value1",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value1))
-    );
+    map.set("value0", ethereum.Value.fromString(this.value0));
+    map.set("value1", ethereum.Value.fromString(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromString(this.value4));
@@ -192,7 +186,7 @@ export class ShowUpClub extends ethereum.SmartContract {
   getJourney(id: BigInt): ShowUpClub__getJourneyResultJourney_Struct {
     let result = super.call(
       "getJourney",
-      "getJourney(uint256):((uint8,uint8,uint256,uint256,string,address,address,uint256,uint256,uint256,bool))",
+      "getJourney(uint256):((string,string,uint256,uint256,string,address,address,uint256,uint256,uint256,bool))",
       [ethereum.Value.fromUnsignedBigInt(id)]
     );
 
@@ -206,7 +200,7 @@ export class ShowUpClub extends ethereum.SmartContract {
   ): ethereum.CallResult<ShowUpClub__getJourneyResultJourney_Struct> {
     let result = super.tryCall(
       "getJourney",
-      "getJourney(uint256):((uint8,uint8,uint256,uint256,string,address,address,uint256,uint256,uint256,bool))",
+      "getJourney(uint256):((string,string,uint256,uint256,string,address,address,uint256,uint256,uint256,bool))",
       [ethereum.Value.fromUnsignedBigInt(id)]
     );
     if (result.reverted) {
@@ -265,13 +259,13 @@ export class ShowUpClub extends ethereum.SmartContract {
   journeys(param0: BigInt): ShowUpClub__journeysResult {
     let result = super.call(
       "journeys",
-      "journeys(uint256):(uint8,uint8,uint256,uint256,string,address,address,uint256,uint256,uint256,bool)",
+      "journeys(uint256):(string,string,uint256,uint256,string,address,address,uint256,uint256,uint256,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
     return new ShowUpClub__journeysResult(
-      result[0].toI32(),
-      result[1].toI32(),
+      result[0].toString(),
+      result[1].toString(),
       result[2].toBigInt(),
       result[3].toBigInt(),
       result[4].toString(),
@@ -289,7 +283,7 @@ export class ShowUpClub extends ethereum.SmartContract {
   ): ethereum.CallResult<ShowUpClub__journeysResult> {
     let result = super.tryCall(
       "journeys",
-      "journeys(uint256):(uint8,uint8,uint256,uint256,string,address,address,uint256,uint256,uint256,bool)",
+      "journeys(uint256):(string,string,uint256,uint256,string,address,address,uint256,uint256,uint256,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -298,8 +292,8 @@ export class ShowUpClub extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       new ShowUpClub__journeysResult(
-        value[0].toI32(),
-        value[1].toI32(),
+        value[0].toString(),
+        value[1].toString(),
         value[2].toBigInt(),
         value[3].toBigInt(),
         value[4].toString(),
@@ -406,12 +400,12 @@ export class CreateJourneyCall__Inputs {
     this._call = call;
   }
 
-  get action(): i32 {
-    return this._call.inputValues[0].value.toI32();
+  get action(): string {
+    return this._call.inputValues[0].value.toString();
   }
 
-  get format(): i32 {
-    return this._call.inputValues[1].value.toI32();
+  get format(): string {
+    return this._call.inputValues[1].value.toString();
   }
 
   get duration(): BigInt {
