@@ -72,6 +72,7 @@ export class Journey extends Entity {
     this.set("creator", Value.fromBytes(Bytes.empty()));
     this.set("journeyId", Value.fromBigInt(BigInt.zero()));
     this.set("description", Value.fromString(""));
+    this.set("createdTransactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -125,6 +126,49 @@ export class Journey extends Entity {
   set description(value: string) {
     this.set("description", Value.fromString(value));
   }
+
+  get createdTransactionHash(): Bytes {
+    let value = this.get("createdTransactionHash");
+    return value!.toBytes();
+  }
+
+  set createdTransactionHash(value: Bytes) {
+    this.set("createdTransactionHash", Value.fromBytes(value));
+  }
+
+  get completedTransactionHash(): Bytes | null {
+    let value = this.get("completedTransactionHash");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set completedTransactionHash(value: Bytes | null) {
+    if (!value) {
+      this.unset("completedTransactionHash");
+    } else {
+      this.set("completedTransactionHash", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get completedBlockTimestamp(): BigInt | null {
+    let value = this.get("completedBlockTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set completedBlockTimestamp(value: BigInt | null) {
+    if (!value) {
+      this.unset("completedBlockTimestamp");
+    } else {
+      this.set("completedBlockTimestamp", Value.fromBigInt(<BigInt>value));
+    }
+  }
 }
 
 export class ShowUp extends Entity {
@@ -136,6 +180,7 @@ export class ShowUp extends Entity {
     this.set("value", Value.fromBigInt(BigInt.zero()));
     this.set("note", Value.fromString(""));
     this.set("blockTimestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -197,5 +242,14 @@ export class ShowUp extends Entity {
 
   set blockTimestamp(value: BigInt) {
     this.set("blockTimestamp", Value.fromBigInt(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
   }
 }

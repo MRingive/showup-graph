@@ -9,6 +9,9 @@ type Journey @entity {
   creator: Bytes! # address
   journeyId: BigInt! # uint256
   description: String!
+  createdTransactionHash: Bytes!
+  completedTransactionHash: Bytes
+  completedBlockTimestamp: BigInt
 }
 
 type ShowUp @entity {
@@ -17,4 +20,5 @@ type ShowUp @entity {
   value: BigInt! # uint256
   note: String!
   blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }

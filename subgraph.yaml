@@ -24,4 +24,6 @@ dataSources:
           handler: handleShowUp
         - event: JourneyCreated(indexed address,uint256)
           handler: handleJourneyCreated
+        - event: JourneyCompleted(indexed uint256)
+          handler: handleJourneyCompleted
       file: ./src/mapping.ts

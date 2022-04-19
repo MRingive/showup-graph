@@ -1,4 +1,5 @@
 import {
+  JourneyCompleted,
   JourneyCreated as JourneyCreatedEvent,
   ShowUp as ShowUpEvent,
   ShowUpClub
@@ -14,28 +15,31 @@ export function handleShowUp(event: ShowUpEvent): void {
   entity.note = event.params.note
 
   entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
 
   entity.save()
 }
 
 export function handleJourneyCreated(event: JourneyCreatedEvent): void {
-  let entity = new JourneyCreated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
+  let entity = new JourneyCreated(event.params.id.toString())
   entity.creator = event.params.creator
   entity.journeyId = event.params.id
   entity.save()
 
-
   const journey = ShowUpClub.bind(event.address)
+  //const journeys = journey.getJourneyIds()
 
-  const journeys = journey.getJourneyIds()
-
-  let journeyEntity = new Journey(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
+  let journeyEntity = new Journey(event.params.id.toString())
   journeyEntity.creator = event.params.creator
   journeyEntity.journeyId = event.params.id
   journeyEntity.description = journey.getJourney(event.params.id).description
+  journeyEntity.createdTransactionHash = event.transaction.hash
   journeyEntity.save()
+}
+
+export function handleJourneyCompleted(event: JourneyCompleted): void {
+  const id = event.params.id.toString()
+  const journey = Journey.load(id)!
+  journey.completedBlockTimestamp = event.block.timestamp
+  journey.completedTransactionHash = event.transaction.hash
 }
