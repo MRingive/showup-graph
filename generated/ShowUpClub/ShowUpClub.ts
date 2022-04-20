@@ -50,6 +50,28 @@ export class JourneyCreated__Params {
   }
 }
 
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
+  }
+
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class ShowUp extends ethereum.Event {
   get params(): ShowUp__Params {
     return new ShowUp__Params(this);
@@ -101,7 +123,7 @@ export class ShowUpClub__getJourneyResultJourney_Struct extends ethereum.Tuple {
     return this[5].toAddress();
   }
 
-  get charity(): Address {
+  get sink(): Address {
     return this[6].toAddress();
   }
 
@@ -113,7 +135,7 @@ export class ShowUpClub__getJourneyResultJourney_Struct extends ethereum.Tuple {
     return this[8].toBigInt();
   }
 
-  get fundsLocked(): BigInt {
+  get deposit(): BigInt {
     return this[9].toBigInt();
   }
 
@@ -307,6 +329,21 @@ export class ShowUpClub extends ethereum.SmartContract {
     );
   }
 
+  owner(): Address {
+    let result = super.call("owner", "owner():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   payments(dest: Address): BigInt {
     let result = super.call("payments", "payments(address):(uint256)", [
       ethereum.Value.fromAddress(dest)
@@ -420,8 +457,12 @@ export class CreateJourneyCall__Inputs {
     return this._call.inputValues[4].value.toString();
   }
 
-  get charity(): Address {
+  get sink(): Address {
     return this._call.inputValues[5].value.toAddress();
+  }
+
+  get fee(): BigInt {
+    return this._call.inputValues[6].value.toBigInt();
   }
 }
 
@@ -429,6 +470,32 @@ export class CreateJourneyCall__Outputs {
   _call: CreateJourneyCall;
 
   constructor(call: CreateJourneyCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
     this._call = call;
   }
 }
@@ -467,6 +534,36 @@ export class ShowUpCall__Outputs {
   _call: ShowUpCall;
 
   constructor(call: ShowUpCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 }
