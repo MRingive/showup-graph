@@ -42,4 +42,5 @@ export function handleJourneyCompleted(event: JourneyCompleted): void {
   const journey = Journey.load(id)!
   journey.completedBlockTimestamp = event.block.timestamp
   journey.completedTransactionHash = event.transaction.hash
+  journey.save()
 }
