@@ -1,7 +1,9 @@
-type JourneyCreated @entity {
+type User @entity {
   id: ID!
-  creator: Bytes! # address
-  journeyId: BigInt! # uint256
+  showUps: BigInt! # uint256
+  journeys: BigInt! # uint256
+  journeysCompleted: BigInt! # uint256
+  createdBlockTimestamp: BigInt!
 }
 
 type Journey @entity {

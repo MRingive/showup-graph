@@ -11,29 +11,31 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class JourneyCreated extends Entity {
+export class User extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("creator", Value.fromBytes(Bytes.empty()));
-    this.set("journeyId", Value.fromBigInt(BigInt.zero()));
+    this.set("showUps", Value.fromBigInt(BigInt.zero()));
+    this.set("journeys", Value.fromBigInt(BigInt.zero()));
+    this.set("journeysCompleted", Value.fromBigInt(BigInt.zero()));
+    this.set("createdBlockTimestamp", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save JourneyCreated entity without an ID");
+    assert(id != null, "Cannot save User entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type JourneyCreated must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type User must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("JourneyCreated", id.toString(), this);
+      store.set("User", id.toString(), this);
     }
   }
 
-  static load(id: string): JourneyCreated | null {
-    return changetype<JourneyCreated | null>(store.get("JourneyCreated", id));
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
   }
 
   get id(): string {
@@ -45,22 +47,40 @@ export class JourneyCreated extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get creator(): Bytes {
-    let value = this.get("creator");
-    return value!.toBytes();
-  }
-
-  set creator(value: Bytes) {
-    this.set("creator", Value.fromBytes(value));
-  }
-
-  get journeyId(): BigInt {
-    let value = this.get("journeyId");
+  get showUps(): BigInt {
+    let value = this.get("showUps");
     return value!.toBigInt();
   }
 
-  set journeyId(value: BigInt) {
-    this.set("journeyId", Value.fromBigInt(value));
+  set showUps(value: BigInt) {
+    this.set("showUps", Value.fromBigInt(value));
+  }
+
+  get journeys(): BigInt {
+    let value = this.get("journeys");
+    return value!.toBigInt();
+  }
+
+  set journeys(value: BigInt) {
+    this.set("journeys", Value.fromBigInt(value));
+  }
+
+  get journeysCompleted(): BigInt {
+    let value = this.get("journeysCompleted");
+    return value!.toBigInt();
+  }
+
+  set journeysCompleted(value: BigInt) {
+    this.set("journeysCompleted", Value.fromBigInt(value));
+  }
+
+  get createdBlockTimestamp(): BigInt {
+    let value = this.get("createdBlockTimestamp");
+    return value!.toBigInt();
+  }
+
+  set createdBlockTimestamp(value: BigInt) {
+    this.set("createdBlockTimestamp", Value.fromBigInt(value));
   }
 }
 
