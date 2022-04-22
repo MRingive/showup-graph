@@ -8,4 +8,5 @@ yarn build
 
 graph auth
 
-yarn deploy
+yarn deploy:mumbai
+yarn deploy:matic

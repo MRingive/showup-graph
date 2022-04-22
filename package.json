@@ -4,13 +4,14 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ mringive/the-show-up-club",
-    "create-local": "graph create --node http://localhost:8020/ mringive/showup",
-    "remove-local": "graph remove --node http://localhost:8020/ mringive/showup",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 mringive/showup"
+    "deploy:mumbai": "yarn prepare:mumbai && graph deploy --node https://api.thegraph.com/deploy/ mringive/the-show-up-club-mumbai",
+    "deploy:matic": "yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ mringive/the-show-up-club",
+    "prepare:mumbai": "mustache config/mumbai.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:matic": "mustache config/matic.json subgraph.template.yaml > subgraph.yaml"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.29.0",
-    "@graphprotocol/graph-ts": "0.26.0"
+    "@graphprotocol/graph-ts": "0.26.0",
+    "mustache": "^4.2.0"
   }
 }
